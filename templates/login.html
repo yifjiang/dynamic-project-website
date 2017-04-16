@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Login</h1>
+{% if blankUser %}
+	<p class="error">
+		Username may not be left blank
+	</p>
+{% endif %}
+{% if blankPassword %}
+	<p class="error">
+		Password may not be left blank
+	</p>
+{% endif %}
+{% if usernameNotExist %}
+	<p class="error">
+		Username does not exist
+	</p>
+{% endif %}
+{% if passWordIncorrect %}
+	<p class="error">
+		Password is incorrect for the specified username
+	</p>
+{% endif %}
+<form action="" method="post">
+	<input type="text" name="username" placeholder="username" id="login_username_input">
+	<input type="password" name="password" placeholder="password" id="login_password_input">
+	<input type="submit" name="Login" value="Login" id="login_submit">
+</form>
+{% endblock %}

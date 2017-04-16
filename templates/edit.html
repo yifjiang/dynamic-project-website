@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Edit/Add People</h1>
+{% for person in people %}
+<form method="post" style="width:100%;border-style: outset;">
+	<input type="hidden" name="form_type" value="edit_people">
+	<input type="hidden" name="people_id" value="{{person['people_id']}}">
+	<input type="text" name="firstname" placeholder="firstname" value="{{person['firstname']}}" style="width:13%">
+	<input type="text" name="lastname" placeholder="lastname" value="{{person['lastname']}}" style="width:14%">
+	<input type="url" name="people_website" placeholder="personal website" value="{% if person['people_website'] is not none %}{{person['people_website']}} {% endif %}" style="width:50%">
+	<input type="submit" name="submit" value="Update" style="width:10%">
+	<input type="submit" name="submit" value="Delete" style="width:10%">
+</form>
+{% endfor %}
+<form method="post" style="width:100%;border-style: outset;">
+	<input type="hidden" name="form_type" value="add_people">
+	<input type="text" name="firstname" placeholder="firstname"  style="width:13%">
+	<input type="text" name="lastname" placeholder="lastname"  style="width:14%">
+	<input type="url" name="people_website" placeholder="personal website" style="width:50%">
+	<input type="submit" name="submit" value="Add" style="width:10%">
+</form>
+<br>
+
+<h1>Add/Edit Publications</h1>
+
+<form  method="post" style="width:100%;border-style: outset;">
+	<input type="hidden" name="form_type" value="add_publication">
+	<input type="text" name="publication_name" placeholder="publication name" style="width:100%">
+	<input type="text" name="conference" placeholder="conference" style="width:100%">
+	<input type="text" name="location" placeholder="location" style="width:24%">
+	<input type="text" name="dates" placeholder="dates" style="width:24%">
+	<input type="url" name="link" placeholder="publication website" style="width:24%">
+	<h4>People involved:</h4>
+	{% for person in people%}
+		<input type="checkbox" name="members" value="{{person['people_id']}}"> {{person['firstname']}} {{person['lastname']}} &emsp;
+	{%endfor%}<br>
+	<input type="submit" name="submit" value="Add" style="width:13%">
+</form><br>
+
+{% for publication in publicationsWithPeople%}
+<form method="post" style="width:100%;border-style: outset;">
+	<input type="hidden" name="form_type" value="edit_publication">
+	<input type="hidden" name="publication_id" value="{{publication['publication_id']}}">
+	<input type="text" name="publication_name" value="{{publication['publication_name']}}" placeholder="publication name" style="width:100%">
+	<input type="text" name="conference" value="{{publication['conference']}}" placeholder="conference" style="width:100%">
+	<input type="text" name="location" value="{% if publication['location'] is not none %}{{publication['location']}}{%endif%}" placeholder="location" style="width:24%">
+	<input type="text" name="dates" value="{{publication['dates']}}" placeholder="dates" style="width:24%">
+	<input type="url" name="link" value="{{publication['link']}}" placeholder="publication website" style="width:24%">
+	<h4>People involved:</h4>
+	{% for person in people%}
+		<input type="checkbox" name="members" value="{{person['people_id']}}" {% if person in publication['people'] %}checked{% endif %} > {{person['firstname']}} {{person['lastname']}} &emsp;
+	{% endfor %}<br>
+	<input type="submit" name="submit" value="Update" style="width:13%">
+	<input type="submit" name="submit" value="Delete" style="width:12%">
+</form><br>
+{% endfor %}
+
+<h1>Add/Edit Projects</h1>
+<div style="border-style: outset;">
+<form method="post" id="new_project_form" style="width:100%">
+	<input type="hidden" name="form_type" value="new_project">
+	<h3><input type="text" name="projectName" placeholder="title" style="width:100%"></h3>
+	<h5><input type="text" name="subtitle" placeholder="subtitle" style="width:100%"></h5>
+	<input type="text" name="project_website" style="width:100%" placeholder="project website">
+
+	<h4>Current or Past:</h4>
+	<input type="radio" name="corp" value="current"> current &emsp;
+	<input type="radio" name="corp" value="past"> past
+
+	<h4>People involved:</h4>
+	{% for person in people %}
+		<input type="checkbox" name="members" value="{{person['people_id']}}" > {{person['firstname']}} {{person['lastname']}} &emsp;
+	{% endfor %}
+
+	<h4>Publications involved:</h4>
+	{% for publication in publications %}
+		<input type="checkbox" name="project_publication" value="{{publication['publication_id']}}" > {{publication['publication_name']}}<br>
+	{% endfor %}
+	<br>
+	<input type="submit" name="submit" value="Add">
+</form><br>
+<textarea name="summary" form="new_project_form" rows="10" cols="100" style="width:100%" placeholder="summary"></textarea>
+	
+</div><br>
+{% for project in  projects %}
+<div style="border-style: outset;">
+<form method="post" id="{{project['project_id']}}_form" style="width: 100%">
+	<input type="hidden" name="form_type" value="edit_project">
+	<input type="hidden" name="project_id" value="{{project['project_id']}}">
+	<h3><input type="text" name="projectName" value="{{project['projectName']}}" placeholder="title" style="width:100%"></h3>
+	<h5><input type="text" name="subtitle" value="{% if project['subtitle'] is not none%}{{project['subtitle']}}{% endif %}" placeholder="subtitle" style="width:100%"></h5>
+	<!-- <input type="text" name="summary" value="{{project['summary']}}" placeholder="summary"> -->
+	<input type="text" name="project_website" value="{% if project['project_website'] is not none %}{{project['project_website']}}{%endif%}" style="width:100%" placeholder="project website">
+
+	<h4>Current or Past:</h4>
+	<input type="radio" name="corp" value="current" {%if project['corp'] == 'current'%}checked{%endif%}> current &emsp;
+	<input type="radio" name="corp" value="past"  {%if project['corp'] == 'past'%}checked{%endif%}> past
+
+	<h4>People involved:</h4>
+	{% for person in people %}
+		<input type="checkbox" name="members" value="{{person['people_id']}}" {% if person in project['people'] %}checked{% endif %} > {{person['firstname']}} {{person['lastname']}} &emsp;
+	{% endfor %}
+
+	<h4>Publications involved:</h4>
+	{% for publication in publications %}
+		<input type="checkbox" name="project_publication" value="{{publication['publication_id']}}" {% if publication in project['publication'] %} checked {% endif %} > {{publication['publication_name']}}<br>
+	{% endfor %}
+	<br>
+	<input type="submit" name="submit" value="Update">
+	<input type="submit" name="submit" value="Delete">
+</form><br>
+<textarea name="summary" form="{{project['project_id']}}_form" rows="10" cols="100" style="width:100%" placeholder="summary">{{project['summary']}}</textarea>
+
+</div><br>
+{% endfor %}
+
+<h1>Add/Edit news</h1>
+<div style="border-style: outset;">
+<form method="post" style="width: 100%" id="new_news">
+	<input type="hidden" name="form_type" value="new_news">
+
+	<h5><input type="text" name="title" style="width: 100%" placeholder="news title"></h5>
+
+	<h4>Project involved:</h4>
+	{% for project in projects %}
+	<input type="radio" name="project_id" value="{{project['project_id']}}"> {{project['projectName']}} <br>
+	{% endfor %}<br>
+
+	<input type="submit" name="submit" value="Add">
+</form>
+<textarea name="summary" form="new_news" rows="5" cols="100" style="width:100%" placeholder="news summary"></textarea>
+</div><br>
+
+{% for new in news %}
+<div style="border-style: outset;">
+<form method="post" style="width: 100%" id="edit_news_{{new['news_id']}}">
+	<input type="hidden" name="form_type" value="edit_news">
+	<input type="hidden" name="news_id" value="{{new['news_id']}}" placeholder="news title">
+
+	<h5><input type="text" name="title" value="{{new['title']}}" style="width: 100%"></h5>
+
+	<h4>Project involved:</h4>
+	{% for project in projects %}
+	<input type="radio" name="project_id" value="{{project['project_id']}}" {% if project['project_id'] == new['project_id'] %} checked {%endif%}> {{project['projectName']}} <br>
+	{% endfor %}<br>
+
+	<input type="submit" name="submit" value="Update">
+	<input type="submit" name="submit" value="Delete">
+</form>
+<textarea name="summary" form="edit_news_{{new['news_id']}}" rows="5" cols="100" style="width:100%" placeholder="news summary">{{new['summary']}}</textarea>
+</div><br>
+{% endfor %}
+
+
+{% endblock %}
