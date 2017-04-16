@@ -21,7 +21,7 @@ K*SQL solves the long-standing problem of providing a unified query engine for b
 CliffGuard is a practical framework that creates robust designs that are immune to parameter uncertainties as much as desired. CliffGuard is the first attempt at applying robust optimization theory in Operations Research to building a practical framework for solving one of the most fundamental problems in databases, namely finding the best physical design.','current');
 INSERT INTO people(firstname, lastname, people_website) values 
 ('Barzan', 'Mozafari', 'http://web.eecs.umich.edu/~mozafari/'), 
-('Yifan', 'Jiang', null);
+('Jesus', 'Christ', null);
 
 INSERT INTO projectPeople(project_id, people_id) values (2,1), (1,1), (2,2);
 
