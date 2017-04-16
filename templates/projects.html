@@ -4,19 +4,19 @@
 <ul>
 {% for project in projects %}
 {% if project['corp'] == 'current'  %}
-<li><a href="#{{project['projectName']}}"><b>{{project['projectName']}}</b>{% if project['subtitle'] is not none and project['subtitle'] != ''%} : {{project['subtitle']}}{% endif %}</a></li><br>
+<li><a href="#{{project['projectName']}}"><b>{{project['projectName']}}</b>{% if project['subtitle'] is not none and project['subtitle'] != ''%} : {{project['subtitle']}}{% endif %}</a></li>
 {% endif %}
 {% endfor %}
-</ul>
+</ul><br>
 
 <h4>Past Projects</h4>
 <ul>
 {% for project in projects %}
 {% if project['corp'] == 'past' %}
-<li><a href="#{{project['projectName']}}"><b>{{project['projectName']}}</b>{% if project['subtitle'] is not none and project['subtitle'] != ''%} : {{project['subtitle']}}{% endif %}</a></li><br>
+<li><a href="#{{project['projectName']}}"><b>{{project['projectName']}}</b>{% if project['subtitle'] is not none and project['subtitle'] != ''%} : {{project['subtitle']}}{% endif %}</a></li>
 {% endif %}
 {% endfor %}
-</ul>
+</ul><br>
 
 
 {% for project in projects%}
@@ -47,19 +47,22 @@
 <p>
 	{{project['summary']}}
 </p>
-<br>
 
+{% if project['news']|length > 0%}
 {% for news in project['news']%}
 <font color="red"><b>News: {{news['title']}}</b></font><br>
 <p>{{news['summary']}}</p>
 {% endfor %}
+{% endif %}
 
+{% if project['publication']|length > 0 %}
 <b>Publications:</b>
 <ul>
 {% for publication in project['publication'] %}
 <li>{% for person in publication['people']%}{% if loop.index != 1 %}, {%endif%}{{person['firstname']}} {{person['lastname']}}{%endfor%}. <a href="{{publication['link']}}">{{publication['publication_name']}}</a>. <i>{{publication['conference']}}</i>, {% if publication['location'] is not none and publication['location'] != ''%} {{publication['location']}}, {% endif %}{{publication['dates']}}.</li>
 {% endfor %}
 </ul>
+{% endif %}
 
 <br>
 {% endfor %}
