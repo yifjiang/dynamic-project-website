@@ -6,6 +6,9 @@ from extensions import fetchResult
 from extensions import db
 from extensions import urlPrefix
 
+def handleQuotes(s):
+	return s.replace('"','\\"').replace("'","\\'")
+
 edit = Blueprint('edit', __name__, template_folder='templates')
 
 @edit.route(urlPrefix+'/edit', methods=['GET','POST'])
@@ -67,9 +70,9 @@ def edit_route():
 					fetchResult('INSERT INTO projectPublication VALUES({},{})'.format(request.form['project_id'], p))
 
 
-				fetchResult('UPDATE projects SET projectName="{}", subtitle="{}", summary="{}", project_website="{}", corp = "{}" WHERE project_id={}'.format(request.form['projectName'], request.form['subtitle'], request.form['summary'], request.form['project_website'], request.form['corp'], request.form['project_id']))
+				fetchResult('UPDATE projects SET projectName="{}", subtitle="{}", summary="{}", project_website="{}", corp = "{}" WHERE project_id={}'.format(request.form['projectName'], request.form['subtitle'], handleQuotes(request.form['summary']), request.form['project_website'], request.form['corp'], request.form['project_id']))
 		elif form_type == 'new_project':
-			fetchResult('INSERT INTO projects(projectName, subtitle, summary, project_website, corp) VALUES("{}", "{}", "{}", "{}", "{}")'.format(request.form['projectName'], request.form['subtitle'], request.form['summary'], request.form['project_website'], request.form['corp']))
+			fetchResult('INSERT INTO projects(projectName, subtitle, summary, project_website, corp) VALUES("{}", "{}", "{}", "{}", "{}")'.format(request.form['projectName'], request.form['subtitle'], handleQuotes(request.form['summary']), request.form['project_website'], request.form['corp']))
 			project_id = fetchResult('SELECT max(project_id) FROM projects')[0]['max(project_id)']
 			# print(project_id)
 			members = request.form.getlist('members')
@@ -79,12 +82,12 @@ def edit_route():
 			for p in ppublications:
 				fetchResult('INSERT INTO projectPublication VALUES({},{})'.format(project_id, p))
 		elif form_type == 'new_news':
-			fetchResult('INSERT INTO news(title, summary, project_id) values ("{}","{}",{})'.format(request.form['title'], request.form['summary'],request.form['project_id']))
+			fetchResult('INSERT INTO news(title, summary, project_id) values ("{}","{}",{})'.format(request.form['title'], handleQuotes(request.form['summary']),request.form['project_id']))
 		elif form_type == 'edit_news':
 			if request.form['submit'] == 'Delete':
 				fetchResult('DELETE FROM news WHERE news_id = {}'.format(request.form['news_id']));
 			elif request.form['submit'] == 'Update':
-				fetchResult('UPDATE news SET title = "{}", summary = "{}", project_id = {} WHERE news_id = {}'.format(request.form['title'], request.form['summary'], request.form['project_id'], request.form['news_id']))
+				fetchResult('UPDATE news SET title = "{}", summary = "{}", project_id = {} WHERE news_id = {}'.format(request.form['title'], handleQuotes(request.form['summary']), request.form['project_id'], request.form['news_id']))
 
 		return redirect(url_for('edit.edit_route'))
 
