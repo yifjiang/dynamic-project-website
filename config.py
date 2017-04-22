@@ -13,7 +13,7 @@ env = dict(
 	host = '0.0.0.0',
 	port = 3000,#for test
 	# port = 4725,#for deploy
-	user = 'group30', 
-	password = 'group30pw!',
-	db = 'group30db',
+	user = 'root', 
+	password = 'root',
+	db = 'yifjiang',
 ) 

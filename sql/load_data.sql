@@ -1,6 +1,6 @@
-drop database if exists group30db;
-create database group30db;
-use group30db;
+drop database if exists yifjiang;
+create database yifjiang;
+use yifjiang;
 CREATE TABLE user(username varchar(20) primary key, password varchar(256));
 CREATE TABLE people(people_id int auto_increment primary key, firstname varchar(50), lastname varchar(50), people_website varchar(1000));
 CREATE TABLE projects(project_id int auto_increment primary key, projectName varchar(255), subtitle varchar(255), summary varchar(30000), project_website varchar(1000), corp ENUM('current', 'past') DEFAULT 'current');
@@ -22,7 +22,7 @@ CliffGuard is a practical framework that creates robust designs that are immune 
 ('Dynamic Project Website', 'a dynamic website that will display similar information as our current project website', 'http://web.eecs.umich.edu/~mozafari/php/projects.php', "In other words, you need to store and display the information about projects, people, news articles, publications etc. in separate tables in a MySQL database and then use PHP or other dynamic web site generation tools to populate the project page using the information stored in the database. Moreover, your website should have a feature where once can login and be able to add/update/remove records from the base tables in the database (so that they don't have to login to MySQL to be able to update the info). Note: You need to deploy your website on a public server (there are plenty of free hosting services that you can Google) and just email me the URL and the username/pass for me to log in to your website (through the web) so that I can add or edit different entities through your website. I shouldn't have to SSH or directly interact with your DB instance to do this. ",'current');
 INSERT INTO people(firstname, lastname, people_website) values 
 ('Barzan', 'Mozafari', 'http://web.eecs.umich.edu/~mozafari/'), 
-('Jesus', 'Christ', null),
+('First', 'Last', null),
 ('Yifan', 'Jiang', 'https://github.com/yifjiang');
 
 INSERT INTO projectPeople(project_id, people_id) values (2,1), (1,1), (2,2), (3,3);
